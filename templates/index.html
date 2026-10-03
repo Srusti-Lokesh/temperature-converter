@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Converter</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="container">
+        <section class="card">
+            <div class="badge">Python • Flask</div>
+            <h1>Temperature Converter</h1>
+            <p class="subtitle">Convert temperatures between Celsius, Fahrenheit, and Kelvin.</p>
+
+            <form method="POST" class="converter-form">
+                <label for="value">Temperature</label>
+                <input id="value" name="value" type="number" step="any"
+                       value="{{ value }}" placeholder="e.g. 25" required>
+
+                <div class="row">
+                    <div>
+                        <label for="from_unit">From</label>
+                        <select id="from_unit" name="from_unit">
+                            <option value="C" {% if from_unit == "C" %}selected{% endif %}>Celsius (°C)</option>
+                            <option value="F" {% if from_unit == "F" %}selected{% endif %}>Fahrenheit (°F)</option>
+                            <option value="K" {% if from_unit == "K" %}selected{% endif %}>Kelvin (K)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="to_unit">To</label>
+                        <select id="to_unit" name="to_unit">
+                            <option value="C" {% if to_unit == "C" %}selected{% endif %}>Celsius (°C)</option>
+                            <option value="F" {% if to_unit == "F" %}selected{% endif %}>Fahrenheit (°F)</option>
+                            <option value="K" {% if to_unit == "K" %}selected{% endif %}>Kelvin (K)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit">Convert Temperature</button>
+            </form>
+
+            {% if result is not none %}
+            <div class="result success">
+                <span>Result</span>
+                <strong>{{ "%.2f"|format(result) }} {{ to_unit }}</strong>
+            </div>
+            {% endif %}
+
+            {% if error %}
+            <div class="result error">
+                <span>Error</span>
+                <strong>{{ error }}</strong>
+            </div>
+            {% endif %}
+
+            <div class="formula-box">
+                <h2>Supported conversions</h2>
+                <ul>
+                    <li>°F = (°C × 9/5) + 32</li>
+                    <li>°C = (°F − 32) × 5/9</li>
+                    <li>K = °C + 273.15</li>
+                    <li>°C = K − 273.15</li>
+                    <li>K = (°F − 32) × 5/9 + 273.15</li>
+                    <li>°F = (K − 273.15) × 9/5 + 32</li>
+                </ul>
+            </div>
+
+            <p class="footer">Input validation prevents temperatures below absolute zero.</p>
+        </section>
+    </main>
+</body>
+</html>
